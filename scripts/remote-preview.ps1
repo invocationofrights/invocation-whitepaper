@@ -20,7 +20,7 @@ git commit -m "Remote preview $ts" --no-verify
 git push -u origin $branch --no-verify
 
 # 3. Get the newest run ID for this branch & workflow
-$gh = "${env:ProgramFiles}\GitHub CLI\gh.exe"   # adjust if different
+$gh = "${env:ProgramFiles(x86)}\GitHub CLI\gh.exe"   # adjust if different
 $run = & $gh run list --workflow preview-build --branch $branch --limit 1 `
         --json databaseId,state --jq '.[0]'$runId = $run.databaseId
 Write-Host "⏳ Waiting for run $runId ..."
