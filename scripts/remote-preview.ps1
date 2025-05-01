@@ -21,13 +21,22 @@ git push -u origin $branch --no-verify
 
 # 3. Get the newest run ID for this branch & workflow
 $gh = "${env:ProgramFiles(x86)}\GitHub CLI\gh.exe"   # adjust if different
-$run = & $gh run list --workflow preview-build --branch $branch --limit 1 `
-        --json databaseId,state --jq '.[0]'
+# Ask for just the run id (databaseId) to avoid extra parsing
+$runId = & $gh run list `
+            --workflow preview-build `
+            --branch   $branch `
+            --limit    1 `
+            --json     databaseId `
+            --jq       '.[0].databaseId'
+
+if (-not $runId) {
+    Write-Error "No workflow run found for branch $branch (did Actions trigger?)"
+}
 Write-Host "⏳ Waiting for run $runId ..."
 & $gh run watch $runId
 
 if ($run.state -ne 'completed') {
-    Write-Error "Run did not complete."
+    Write-Error "Run did not complete: $run.state"
 }
 
 # 4. Download artifact
