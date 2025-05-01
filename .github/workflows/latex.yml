@@ -1,5 +1,8 @@
 name: build-pdf-on-release
 
+permissions:
+  contents: write      # needed for uploading files to the release
+
 on:
   #Runs automatically whenever you create/publish a new GitHub Release
   release:
