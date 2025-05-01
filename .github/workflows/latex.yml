@@ -1,8 +1,5 @@
 name: build-pdf-on-release
 
-permissions:
-  contents: write      # needed for uploading files to the release
-
 on:
   #Runs automatically whenever you create/publish a new GitHub Release
   release:
@@ -11,22 +8,41 @@ on:
   #Optional: lets you trigger the job manually from the Actions tab
   workflow_dispatch: {}
 
-jobs:
-  pdf:
-    runs-on: ubuntu-latest
+permissions:
+  contents: write      # upload to release
+  pages: write         # publish to GitHub Pages
+  id-token: write      # required by actions/configure-pages
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
     steps:
-      # 1️⃣  Check out the source
       - uses: actions/checkout@v4
 
-      # 2️⃣  Compile Invocation_of_Rights.tex → Invocation_of_Rights.pdf
+      # 1️⃣  Compile the PDF
       - uses: xu-cheng/latex-action@v3
         with:
           root_file: Invocation_of_Rights.tex
-          latexmk_shell_escape: true   # remove if you don't need \write18
+          latexmk_shell_escape: true
 
-      # 3️⃣  Attach the PDF to the Release that triggered this run
-      - name: Upload PDF to release
-        uses: softprops/action-gh-release@v1
+      # 2️⃣  Attach PDF to the Release
+      - uses: softprops/action-gh-release@v1
         with:
           files: Invocation_of_Rights.pdf
+
+      # 3️⃣  Publish same PDF to GitHub Pages (inline view)
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Copy PDF into public dir
+        run: |
+          mkdir public
+          cp Invocation_of_Rights.pdf public/
+
+      - name: Deploy to gh-pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Publish
+        uses: actions/deploy-pages@v4
