@@ -1,16 +1,17 @@
-name: preview-build            # what you’ll see in the Actions tab
+name: preview-build            # shows in Actions UI
 
 on:
-  # Manual “Run workflow” button and `gh workflow run preview.yml`
-  workflow_dispatch:
-
-  # Rebuild PDF on every push to main  (remove these 3 lines if not needed)
+  workflow_dispatch:           # manual button, still handy
   push:
-    branches:
+    branches-ignore:           # build every branch EXCEPT main
       - main
 
 permissions:
-  contents: read               # compile-only, no repo writes
+  contents: read               # compile-only, no writes
+
+concurrency:
+  group: preview-${{ github.ref_name }}
+  cancel-in-progress: true     # auto-cancel older preview runs on same branch
 
 jobs:
   build-preview:
@@ -25,5 +26,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: preview          # appears in Actions UI / gh run download
+          name: preview
           path: Invocation_of_Rights.pdf
