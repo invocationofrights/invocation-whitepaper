@@ -24,7 +24,7 @@ $gh = "${env:ProgramFiles(x86)}\GitHub CLI\gh.exe"   # adjust if different
 $run = & $gh run list --workflow preview-build --branch $branch --limit 1 `
         --json databaseId,state --jq '.[0]'
 Write-Host "⏳ Waiting for run $runId ..."
-gh run watch $runId
+& $gh run watch $runId
 
 if ($run.state -ne 'completed') {
     Write-Error "Run did not complete."
@@ -33,7 +33,7 @@ if ($run.state -ne 'completed') {
 # 4. Download artifact
 Remove-Item -Recurse -Force build -ErrorAction SilentlyContinue
 New-Item -ItemType Directory build | Out-Null
-gh run download $runId --name preview --dir build
+& $gh run download $runId --name preview --dir build
 
 # 5. Open the PDF
 $fullPath = (Resolve-Path build\Invocation_of_Rights.pdf).Path
