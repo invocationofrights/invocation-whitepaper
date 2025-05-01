@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+
+% --- Packages ---
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}   % pdfLaTeX + UTF‑8
+\usepackage{enumitem}       % tighter lists
+\usepackage{array,booktabs} % nice tables
+\usepackage{tcolorbox}      % shaded boxes
+\usepackage{hyperref}
+\hypersetup{colorlinks,allcolors=black}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{needspace}   % already tiny, no extra layout changes
+\usepackage{longtable}
+\usepackage{tabularx}   % flexible‑width tables
+\usepackage{booktabs}   % \toprule, \midrule, \bottomrule
+\usepackage{array}      % \newcolumntype
+\onehalfspacing
+
+% --------------------------------------------------------
+% Make U+2010 and U+2011 behave like normal breakable hyphens
+\DeclareRobustCommand{\breakablehyphen}{\nobreak-\hspace{0pt}}
+\DeclareUnicodeCharacter{2010}{\breakablehyphen} % ‐ (hyphen)
+\DeclareUnicodeCharacter{2011}{\breakablehyphen} % ‑ (non‑breaking hyphen)
+\DeclareUnicodeCharacter{2009}{\,}               % thin space -> small space
+\DeclareUnicodeCharacter{2013}{--}               % en‑dash   -> --
+\DeclareUnicodeCharacter{00A0}{ }        % non‑breaking space  (U+00A0) → space
+\DeclareUnicodeCharacter{202F}{\,}       % narrow NBSP         (U+202F) → thin space
+\DeclareUnicodeCharacter{2248}{$\approx$}% almost‑equal sign   (U+2248) → math
+
+% (If any compound uses the ASCII "-" it is already breakable.)
+% --------------------------------------------------------
+\tracinglostchars=2   % tells TeX to print hex of every unknown char
+
+% Column type for ragged‑right p‑columns
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% --- Bibliography ---
+\usepackage[backend=biber,style=apa]{biblatex}
+\addbibresource{refs.bib}
+
+% --- Title stuff ---
+\title{The Invocation of Rights:\\ A Whitepaper on Standardized Civilian Legal Language in Police Encounters}
+\author{Randle Unger} % or omit
+\date{April 2025}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% --- Body sections ---
+\input{sections/01_exec.tex}
+\input{sections/02_problem.tex}
+\input{sections/03_invocation.tex}
+\input{sections/04_legal.tex}
+\input{sections/05_behavior.tex}
+\input{sections/06_implementation.tex}
+\input{sections/07_conclusion.tex}
+
+% --- Appendices ---
+\clearpage
+\appendix
+
+% --- TOC header for the appendices (safe with hyperref) ---
+\addcontentsline{toc}{section}{\textbf{Appendices}}
+
+
+\input{appendices/appA_script.tex}
+\clearpage
+\input{appendices/appB_cases.tex}
+\clearpage
+\input{appendices/appC_foundations.tex}
+\clearpage
+\input{appendices/appD_scenarios.tex}
+\clearpage
+\input{appendices/appE_risk.tex}
+
+\printbibliography
+\end{document}
