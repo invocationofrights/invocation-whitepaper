@@ -1,19 +1,29 @@
-name: build-pdf
-on:
-  workflow_dispatch:       # manual trigger
-  push:
-    branches: [main]       # or your dev branch
-jobs:
-  latex:
-    runs-on: ubuntu-latest          # free runner
-    steps:
-      - uses: actions/checkout@v4
-      - uses: xu-cheng/latex-action@v3   # 950-MB cached image
-        with:
-          root_file: main.tex
-          latexmk_shell_escape: true     # if you use minted/TikZ externalize
-      - uses: actions/upload-artifact@v4
-        with:
-          name: whitepaper
-          path: main.pdf
+name: build-pdf-on-release
 
+on:
+  #Runs automatically whenever you create/publish a new GitHub Release
+  release:
+    types: [created]
+
+  #Optional: lets you trigger the job manually from the Actions tab
+  workflow_dispatch: {}
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣  Check out the source
+      - uses: actions/checkout@v4
+
+      # 2️⃣  Compile Invocation_of_Rights.tex → Invocation_of_Rights.pdf
+      - uses: xu-cheng/latex-action@v3
+        with:
+          root_file: Invocation_of_Rights.tex
+          latexmk_shell_escape: true   # remove if you don't need \write18
+
+      # 3️⃣  Attach the PDF to the Release that triggered this run
+      - name: Upload PDF to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Invocation_of_Rights.pdf
