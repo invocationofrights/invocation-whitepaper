@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Preview Pdf" type="PowerShellRunType" factoryName="PowerShell" scriptUrl="C:\Users\randy\source\repos\invocation-of-rights\invocation-whitepaper\scripts\remote-preview.ps1" executablePath="$PROJECT_DIR$/../../../../../../WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe">
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>
