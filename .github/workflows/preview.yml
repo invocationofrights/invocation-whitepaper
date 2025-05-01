@@ -1,0 +1,26 @@
+name: preview-build                      # appears in Actions UI
+
+on:
+#  workflow_dispatch: {}                  # manual “Run workflow” button
+  # optional: uncomment next 2 lines if you want automatic preview on every push
+   push:
+     branches: [main]
+
+permissions:
+  contents: read                         # compile only → read-only token
+
+jobs:
+  build-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: xu-cheng/latex-action@v3   # no docker pull caching tweaks needed
+        with:
+          root_file: Invocation_of_Rights.tex
+          latexmk_shell_escape: true     # keep consistent with release build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview                  # artifact name shown in UI / CLI
+          path: Invocation_of_Rights.pdf

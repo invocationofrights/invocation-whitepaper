@@ -17,11 +17,11 @@ No PDFs live in the repo; they are built automatically and published by GitHub A
 
 ## 🚀 How the CI pipeline works
 
-| Step | Trigger | Output |
-|------|---------|--------|
-| **Compile PDF** | `release` event (`gh release create …`) | `Invocation_of_Rights.pdf` |
-| **Attach asset** | same job | release asset (download-only) |
-| **Publish to Pages** | same job | inline view at:<br> `https://invocationofrights.org/invocation-whitepaper/Invocation_of_Rights.pdf` |
+| Step                 | Trigger                                 | Output                                                                                              |
+|----------------------|-----------------------------------------|-----------------------------------------------------------------------------------------------------|
+| **Compile PDF**      | `release` event (`gh release create …`) | `Invocation_of_Rights.pdf`                                                                          |
+| **Attach asset**     | same job                                | release asset (download-only)                                                                       |
+| **Publish to Pages** | same job                                | inline view at:<br> `https://invocationofrights.org/invocation-whitepaper/Invocation_of_Rights.pdf` |
 
 ### Key URLs
 
