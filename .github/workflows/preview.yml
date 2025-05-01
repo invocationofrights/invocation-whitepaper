@@ -1,13 +1,16 @@
-name: preview-build                      # appears in Actions UI
+name: preview-build            # what you’ll see in the Actions tab
 
 on:
-#  workflow_dispatch: {}                  # manual “Run workflow” button
-  # optional: uncomment next 2 lines if you want automatic preview on every push
-   push:
-     branches: [main]
+  # Manual “Run workflow” button and `gh workflow run preview.yml`
+  workflow_dispatch:
+
+  # Rebuild PDF on every push to main  (remove these 3 lines if not needed)
+  push:
+    branches:
+      - main
 
 permissions:
-  contents: read                         # compile only → read-only token
+  contents: read               # compile-only, no repo writes
 
 jobs:
   build-preview:
@@ -15,12 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: xu-cheng/latex-action@v3   # no docker pull caching tweaks needed
+      - uses: xu-cheng/latex-action@v3
         with:
           root_file: Invocation_of_Rights.tex
-          latexmk_shell_escape: true     # keep consistent with release build
+          latexmk_shell_escape: true
 
       - uses: actions/upload-artifact@v4
         with:
-          name: preview                  # artifact name shown in UI / CLI
+          name: preview          # appears in Actions UI / gh run download
           path: Invocation_of_Rights.pdf
